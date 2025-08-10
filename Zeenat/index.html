@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Happy Birthday Zeenat 🎉</title>
+<style>
+  :root{
+    --bg1:#180025;
+    --bg2:#4b0073;
+    --accent:#ffd166;
+    --muted:#f3e9ff;
+    --glass: rgba(255,255,255,0.06);
+    --card-radius:18px;
+    --soft-shadow: 0 12px 40px rgba(0,0,0,0.45);
+    --maxw:1100px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:var(--muted);background:linear-gradient(180deg,var(--bg1),var(--bg2));-webkit-font-smoothing:antialiased}
+  /* Video */
+  .bg-video{position:fixed;inset:0;z-index:-4;overflow:hidden;align-items: stretch;display: flex; width: 100%;height: 100%}
+  .bg-video video{width:100%;height:100%;object-fit:cover;margin-top:0;filter:contrast(1.02) saturate(1.06) brightness(0.72);position: absolute; top: 0; left: 0; margin: 0}
+  .overlay-dim{position:fixed;inset:0;z-index:-2;background:linear-gradient(120deg, rgba(43,0,87,0.45), rgba(123,31,162,0.45));backdrop-filter:blur(2px)}
+  /* Intro screens */
+  .intro-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:black;color:white;font-size:1.8rem;text-align:center;z-index:9999;opacity:0;pointer-events:none;transition:opacity .9s ease}
+  .intro-visible{opacity:1;pointer-events:auto}
+  .intro-surprise{font-size:clamp(20px,3vw,36px);color:#fff}
+  .intro-wish{font-size:clamp(34px,6vw,72px);color:var(--accent);text-shadow:0 10px 40px rgba(255,209,102,0.12);text-shadow: 0 0 20px rgba(255,215,0,0.8);}
+  main{position:relative;z-index:10;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:36px 20px}
+  .container{width:100%;max-width:var(--maxw)}
+  .hero{display:grid;grid-template-columns:1fr 420px;gap:24px;align-items:center;margin-top:18px}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));padding:26px;border-radius:var(--card-radius);box-shadow:var(--soft-shadow);backdrop-filter: blur(6px)}
+  .title{font-size:clamp(28px,4vw,44px);color:var(--muted);margin:0 0 8px;letter-spacing:0.4px}
+  .name{font-size:clamp(48px,7vw,84px);color:var(--accent);font-weight:800;line-height:0.85}
+  .sub{color:rgba(255,255,255,0.9);margin-bottom:12px}
+  .btn{display:inline-flex;gap:10px;align-items:center;background:linear-gradient(90deg,#ffd166,#ffb86b);color:#2b0057;padding:10px 16px;border-radius:12px;font-weight:700;border:none;cursor:pointer}
+  .muted-note{font-size:13px;color:rgba(255,255,255,0.72)}
+  /* Countdown */
+  .countdown{display:flex;gap:12px;margin-top:12px}
+  .countdown .item{background:rgba(255,255,255,0.04);padding:12px 16px;border-radius:12px;text-align:center;min-width:80px}
+  .countdown .num{font-size:20px;font-weight:800;color:var(--accent)}
+  .countdown .lbl{font-size:12px;color:rgba(255,255,255,0.75)}
+  /* Gallery card */
+  .gallery-card h3{margin:6px 0 12px;color:var(--muted)}
+  .gallery-btn{width:100%;display:flex;justify-content:center}
+  /* Message area */
+  .message-card{margin-top:20px}
+  .message-text{white-space:pre-line;line-height:1.6;color:var(--muted);font-size:16px}
+  /* Fireworks canvas */
+  #fireworks{position:fixed;inset:0;pointer-events:none;z-index:9998}
+  /* Gallery overlay */
+  .gallery-overlay{position:fixed;inset:0;background:rgba(11,6,20,0.55);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:9997;opacity:0;pointer-events:none;transition:opacity .35s ease}
+  .gallery-overlay.open{opacity:1;pointer-events:auto}
+  .gallery-frame{background:rgba(255,255,255,0.04);border-radius:14px;padding:18px;max-width:90%;max-height:85%;width:920px;display:flex;flex-direction:column;align-items:center;box-shadow:0 20px 60px rgba(0,0,0,0.6)}
+  .gallery-image{max-width:100%;max-height:62vh;border-radius:10px;transform:scale(.98);opacity:0;transition:all .45s cubic-bezier(.2,.9,.3,1)}
+  .gallery-image.show{transform:scale(1);opacity:1}
+  .gallery-controls{display:flex;gap:10px;margin-top:12px;align-items:center}
+  .control-btn{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.04);padding:10px 12px;border-radius:10px;color:var(--muted);cursor:pointer}
+  .close-x{margin-left:auto;background:transparent;border:none;color:var(--muted);font-size:18px;cursor:pointer}
+  /* responsive */
+  .balloons{position:fixed;left:6%;top:10%;pointer-events:none;z-index:1}
+  .balloon{width:44px;height:60px;border-radius:22px 22px 22px 22px;transform-origin:center bottom;animation:float 6s ease-in-out infinite;opacity:0.95}
+  @keyframes float{0%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-28px) rotate(6deg)}100%{transform:translateY(0) rotate(-6deg)}}
+  @media (max-width:920px){.hero{grid-template-columns:1fr}.gallery-frame{width:94%}}
+</style>
+</head>
+<body>
+
+  <!-- Intro screens -->
+  <div id="introScreen" class="intro-screen intro-visible"></div>
+  <div id="surpriseScreen" class="intro-screen"><div class="intro-surprise">What do you think... this is the only surprise?</div></div>
+  <div id="wishScreen" class="intro-screen"><div class="intro-wish">🎉 Happy Birthday Zeenat 🎉</div></div>
+
+  <!-- Background video -->
+  <div class="bg-video" aria-hidden="true">
+    <video id="bgVid" autoplay muted loop playsinline>
+      <source src="assets/birthday.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="overlay-dim" aria-hidden="true"></div>
+
+  <!-- Decorative balloons -->
+  <div class="balloons" aria-hidden="true">
+    <div class="balloon" style="background:linear-gradient(180deg,#ff7ac2,#ffa6e6);margin-bottom:18px"></div>
+    <div class="balloon" style="background:linear-gradient(180deg,#ffd166,#ffb86b);transform:translateY(30px) scale(0.9);"></div>
+    <div class="balloon" style="background:linear-gradient(180deg,#7b1fa2,#b76bdc);transform:translateY(60px) scale(1.05);"></div>
+  </div>
+
+  <main>
+    <div class="container">
+      <div class="hero">
+        <!-- Left - main message -->
+        <section class="card" id="heroCard" aria-labelledby="heroTitle">
+          <h1 id="heroTitle" class="title">A Very Happy Birthday</h1>
+          <div class="name">Zeenat</div>
+          <p class="sub">Wishing you a day filled with love, laughter and endless joy. You're a blessing to this world, and this digital surprise is just a reflection of your light 🎂 💖</p>
+
+          <div style="display:flex;gap:12px;align-items:center;margin-top:12px">
+            <button class="btn" id="surpriseBtn" aria-label="Surprise button">Surprise 🎉</button>
+            <div class="muted-note">Click to launch confetti & fireworks</div>
+          </div>
+
+          <div style="margin-top:18px">
+            <!-- Countdown to Aug 23 -->
+            <div class="countdown" id="countdown">
+              <div class="item"><div class="num" id="days">00</div><div class="lbl">Days</div></div>
+              <div class="item"><div class="num" id="hours">00</div><div class="lbl">Hours</div></div>
+              <div class="item"><div class="num" id="minutes">00</div><div class="lbl">Minutes</div></div>
+              <div class="item"><div class="num" id="seconds">00</div><div class="lbl">Seconds</div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right - gallery card -->
+        <aside class="card gallery-card" aria-labelledby="galleryTitle">
+          <h3 id="galleryTitle" style="margin-top:0;color:var(--muted)">Gallery</h3>
+          <p style="color:rgba(255,255,255,0.78);margin-bottom:12px">Click to open the photo viewer..... and witness your own charm.</p>
+          <div class="gallery-btn">
+            <button class="btn" id="openGalleryBtn">Open Photo Viewer</button>
+          </div>
+          <div style="margin-top:14px;color:rgba(255,255,255,0.7);font-size:13px">
+          </div>
+        </aside>
+      </div>
+
+      <!-- Personal message (keeps original style) -->
+      <section class="card message-card">
+        <h2 style="margin-top:0;color:var(--muted)">Special Message for You 💌</h2>
+        <div class="message-text">
+Happy birthdayy!! 🎉
+Honestly bolu toh, tu class mein woh ek person hai jisse main sabse zyada baat karta hoon — and I actually look forward to those random little talks. Kabhi bina baat ke hasi aa jana, ya woh weird-but-cute laugh 😄 — sab kuch ek alag vibe deta hai. Tu ek aise zone mein hai jahan normal dosti se zyada bonding hai, but it’s not something I can explain easily 😅.
+
+Bas yahi kehna tha ki aaj ka din full-on special ho, mast surprises milein, aur tu khud bhi extra happy feel kare 🥳💫 Stay the way you are — thodi funny, thodi crazy, but totally amazing.
+
+Aur haan… aaj bhool mat jana ki tujhe wish karne wale sabse pehle logon mein main bhi tha 😎🎂
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Gallery overlay (hidden until opened) -->
+  <div id="galleryOverlay" class="gallery-overlay" role="dialog" aria-hidden="true">
+    <div class="gallery-frame" role="document" aria-label="Photo viewer">
+      <div style="width:100%;display:flex;align-items:center;gap:12px">
+        <strong style="color:var(--muted)">Photo Viewer</strong>
+        <button class="close-x" id="closeGallery" title="Close viewer">&times;</button>
+      </div>
+
+      <img id="galleryImage" class="gallery-image" src="" alt="Zeenat photo">
+
+      <div class="gallery-controls">
+        <button class="control-btn" id="prevBtn" aria-label="Previous photo">Prev</button>
+        <button class="control-btn" id="nextBtn" aria-label="Next photo">Next</button>
+        <div style="margin-left:auto;color:rgba(255,255,255,0.65)" id="photoCounter">0 / 0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fireworks canvas -->
+  <canvas id="fireworks"></canvas>
+
+<script>
+  
+/* ---------------- Intro sequence ---------------- */
+const intro = document.getElementById('introScreen');
+const surprise = document.getElementById('surpriseScreen');
+const wish = document.getElementById('wishScreen');
+
+function showIntroSequence() {
+  // timeline:
+  // 0-5s: intro black
+  // 5-10s: surprise text
+  // 10-13s: wish reveal (then fade out)
+  intro.classList.add('intro-visible'); // already visible initially
+  setTimeout(()=>{ intro.classList.remove('intro-visible'); surprise.classList.add('intro-visible'); }, 5000);
+  setTimeout(()=>{ surprise.classList.remove('intro-visible'); wish.classList.add('intro-visible'); triggerConfettiMini(); }, 10000);
+  setTimeout(()=>{ wish.classList.remove('intro-visible'); }, 13000);
+}
+// Run on load
+showIntroSequence();
+
+/* ---------------- Countdown to Aug 23 ---------------- */
+// Compute next Aug 23 in user's local time
+function nextBirthday(month, day){
+  const now = new Date();
+  let year = now.getFullYear();
+  const candidate = new Date(year, month - 1, day, 0, 0, 0);
+  if (candidate <= now) year += 1;
+  return new Date(year, month - 1, day, 0, 0, 0);
+}
+const target = nextBirthday(8,23); // August 23
+const daysEl = document.getElementById('days');
+const hoursEl = document.getElementById('hours');
+const minsEl = document.getElementById('minutes');
+const secsEl = document.getElementById('seconds');
+
+function pad(n){ return String(n).padStart(2,'0'); }
+function tick(){
+  const now = new Date();
+  let diff = Math.max(0, Math.floor((target - now)/1000));
+  const days = Math.floor(diff / 86400); diff %= 86400;
+  const hours = Math.floor(diff / 3600); diff %= 3600;
+  const mins = Math.floor(diff / 60);
+  const secs = diff % 60;
+  daysEl.textContent = pad(days);
+  hoursEl.textContent = pad(hours);
+  minsEl.textContent = pad(mins);
+  secsEl.textContent = pad(secs);
+}
+tick();
+setInterval(tick, 1000);
+
+/* ---------------- Gallery overlay & one-by-one logic ---------------- */
+// Update this array if you have more/less images or different names
+const galleryImages = [
+  'assets/photo1.jpg',
+  'assets/photo2.jpg',
+  'assets/photo3.jpg',
+  'assets/photo4.jpg'
+];
+
+const openBtn = document.getElementById('openGalleryBtn');
+const overlay = document.getElementById('galleryOverlay');
+const galleryImg = document.getElementById('galleryImage');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const closeBtn = document.getElementById('closeGallery');
+const photoCounter = document.getElementById('photoCounter');
+
+let currentIndex = 0;
+
+function openGallery(startIndex = 0){
+  if (!galleryImages.length) return;
+  currentIndex = startIndex;
+  overlay.classList.add('open');
+  overlay.setAttribute('aria-hidden','false');
+  showCurrentImage();
+}
+function closeGallery(){
+  overlay.classList.remove('open');
+  overlay.setAttribute('aria-hidden','true');
+  // hide image immediately
+  galleryImg.classList.remove('show');
+  setTimeout(()=>{ galleryImg.src = ''; }, 300);
+}
+function showCurrentImage(){
+  const src = galleryImages[currentIndex];
+  photoCounter.textContent = `${currentIndex + 1} / ${galleryImages.length}`;
+  // load image then animate
+  galleryImg.classList.remove('show');
+  // small delay to allow transition out if needed
+  setTimeout(()=>{
+    galleryImg.src = src;
+    // wait for the image to load to ensure smooth animation
+    galleryImg.onload = ()=> {
+      // reset transform then show
+      requestAnimationFrame(()=> {
+        galleryImg.classList.add('show');
+      });
+    };
+  }, 180);
+}
+function nextImage(){
+  if (currentIndex < galleryImages.length - 1){
+    currentIndex++;
+    showCurrentImage();
+  } else {
+    // optionally loop or keep at last; we'll loop
+    currentIndex = 0;
+    showCurrentImage();
+  }
+}
+function prevImage(){
+  if (currentIndex > 0){
+    currentIndex--;
+    showCurrentImage();
+  } else {
+    currentIndex = galleryImages.length - 1;
+    showCurrentImage();
+  }
+}
+
+// open on button
+openBtn.addEventListener('click', ()=> openGallery(0));
+nextBtn.addEventListener('click', nextImage);
+prevBtn.addEventListener('click', prevImage);
+closeBtn.addEventListener('click', closeGallery);
+// also allow clicking on image to go next
+galleryImg.addEventListener('click', nextImage);
+// close overlay via Escape
+document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') closeGallery(); });
+
+/* ---------------- Surprise button: confetti + fireworks ---------------- */
+const surpriseBtn = document.getElementById('surpriseBtn');
+surpriseBtn.addEventListener('click', ()=>{
+  triggerConfettiBurst();
+  launchFireworks();
+});
+
+/* ---------- Tiny confetti (canvas) implementation (no external libs) ---------- */
+function triggerConfettiMini(){
+  // gentle short burst used for intro reveal
+  confettiBurst({count:90, spread:120, duration:1500});
+}
+function triggerConfettiBurst(){
+  confettiBurst({count:180, spread:160, duration:2500});
+}
+
+function confettiBurst({count = 100, spread = 100, duration = 2000} = {}){
+  const canvas = document.createElement('canvas');
+  canvas.style.position = 'fixed';
+  canvas.style.left = '0';
+  canvas.style.top = '0';
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+  canvas.style.pointerEvents = 'none';
+  canvas.style.zIndex = 9999;
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  const DPR = window.devicePixelRatio || 1;
+  canvas.width = window.innerWidth * DPR;
+  canvas.height = window.innerHeight * DPR;
+  ctx.scale(DPR, DPR);
+
+  const colors = ['#ffd166','#ff7ac2','#7b1fa2','#ffb86b','#e0c3fc','#66d9ff','#b6ff6f'];
+  const particles = [];
+  for (let i = 0; i < count; i++){
+    particles.push({
+      x: window.innerWidth * 0.5,
+      y: window.innerHeight * 0.5,
+      vx: (Math.random() - 0.5) * (spread/20),
+      vy: (Math.random() - 0.8) * (spread/40) - Math.random()*3,
+      size: 4 + Math.random()*6,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      life: 60 + Math.random()*40
+    });
+  }
+  let t0 = performance.now();
+  function frame(t){
+    const dt = t - t0; t0 = t;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for (let p of particles){
+      p.vy += 0.08; // gravity
+      p.x += p.vx;
+      p.y += p.vy;
+      p.life -= 1;
+      ctx.fillStyle = p.color;
+      ctx.fillRect(p.x, p.y, p.size, p.size);
+    }
+    // remove dead
+    for (let i = particles.length -1; i >=0; i--) if (particles[i].life <= 0) particles.splice(i,1);
+    if (particles.length) requestAnimationFrame(frame);
+    else { canvas.remove(); }
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ---------------- Simple fireworks on canvas ---------------- */
+const fwCanvas = document.getElementById('fireworks');
+const fwCtx = fwCanvas.getContext('2d');
+let W = fwCanvas.width = window.innerWidth;
+let H = fwCanvas.height = window.innerHeight;
+window.addEventListener('resize', ()=>{ W = fwCanvas.width = window.innerWidth; H = fwCanvas.height = window.innerHeight; });
+
+let fwParticles = [];
+function launchFireworks(){
+  const bursts = 6 + Math.floor(Math.random()*6);
+  for (let i=0;i<bursts;i++){
+    const x = Math.random()*W*0.8 + W*0.1;
+    const y = Math.random()*H*0.4 + H*0.1;
+    createFwBurst(x,y);
+  }
+  if (!fwAnim) fwAnimate();
+}
+function createFwBurst(x,y){
+  const colors = ['#ffd166','#ff7ac2','#7b1fa2','#ffb86b','#e0c3fc'];
+  const n = 30 + Math.floor(Math.random()*50);
+  for (let i=0;i<n;i++){
+    const a = Math.random()*Math.PI*2;
+    const s = 2 + Math.random()*5;
+    fwParticles.push({
+      x,y,
+      vx: Math.cos(a)*s,
+      vy: Math.sin(a)*s,
+      life: 50 + Math.random()*80,
+      color: colors[Math.floor(Math.random()*colors.length)],
+    });
+  }
+}
+let fwAnim = null;
+function fwAnimate(){
+  fwAnim = requestAnimationFrame(fwAnimate);
+  fwCtx.clearRect(0,0,W,H);
+  for (let i = fwParticles.length -1; i >= 0; i--){
+    const p = fwParticles[i];
+    p.vy += 0.03;
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life--;
+    fwCtx.globalAlpha = Math.max(0, p.life / 120);
+    fwCtx.fillStyle = p.color;
+    fwCtx.beginPath();
+    fwCtx.arc(p.x, p.y, Math.max(1, p.life/18), 0, Math.PI*2);
+    fwCtx.fill();
+    if (p.life <= 0) fwParticles.splice(i,1);
+  }
+  if (fwParticles.length === 0){ cancelAnimationFrame(fwAnim); fwAnim = null; }
+}
+
+/* ---------------- Small entrance animation (subtle) ---------------- */
+document.addEventListener('DOMContentLoaded', ()=> {
+  // subtle fade-in of hero elements after intro ends (14s from page load)
+  setTimeout(()=>{
+    document.querySelectorAll('.card, .name, .title').forEach((el,i)=>{
+      el.style.opacity = 0;
+      el.style.transform = 'translateY(10px)';
+      setTimeout(()=>{ el.style.transition = 'all .7s cubic-bezier(.2,.9,.3,1)'; el.style.opacity=1; el.style.transform='translateY(0)'; }, i*90);
+    });
+  }, 14000);
+});
+</script>
+
+</body>
+</html>
